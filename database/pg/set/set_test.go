@@ -28,6 +28,15 @@ func TestSet_Empty(t *testing.T) {
 	})
 }
 
+func TestSet_Add(t *testing.T) {
+	s := Set{}
+	s.Add("foo")
+	s.Add("bar")
+	s.Add("bar")
+	s.Add("bar")
+	assert.Equal(t, Set{"foo", "bar"}, s)
+}
+
 func TestSet_Has(t *testing.T) {
 	s := Set{"foo", "bar"}
 	assert.True(t, s.Has("foo"))
