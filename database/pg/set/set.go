@@ -63,6 +63,7 @@ func (v *Set) Remove(value string) {
 	for i, s := range *v {
 		if s == value {
 			*v = append((*v)[:i], (*v)[i+1:]...)
+			return
 		}
 	}
 }
