@@ -1,5 +1,9 @@
-// Package set implements a JSONB set. The Go-land type is backed by a string slice,
-// while the Postgres JSONB value is backed by an object.
+// Package set implements a JSONB set.
+//
+// The Go-land type is backed by a string slice, while the
+// Postgres JSONB value is backed by an object. This is purely
+// for cosmetic reasons, if you have very large sets you should
+// use a map implementation.
 package set
 
 import (
