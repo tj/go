@@ -2,10 +2,38 @@
 package influx
 
 import (
+	"crypto/tls"
 	"time"
 
 	influx "github.com/influxdata/influxdb/client/v2"
 )
+
+// Config is the config data needed to create an HTTP Client.
+type Config struct {
+	// Addr should be of the form "http://host:port"
+	// or "http://[ipv6-host%zone]:port".
+	Addr string
+
+	// Username is the influxdb username, optional.
+	Username string
+
+	// Password is the influxdb password, optional.
+	Password string
+
+	// UserAgent is the http User Agent, defaults to "InfluxDBClient".
+	UserAgent string
+
+	// Timeout for influxdb writes, defaults to no timeout.
+	Timeout time.Duration
+
+	// InsecureSkipVerify gets passed to the http client, if true, it will
+	// skip https certificate verification. Defaults to false.
+	InsecureSkipVerify bool
+
+	// TLSConfig allows the user to set their own TLS config for the HTTP
+	// Client. If set, this option overrides InsecureSkipVerify.
+	TLSConfig *tls.Config
+}
 
 // Client is an influxdb convenience wrapper.
 type Client struct {
@@ -13,11 +41,8 @@ type Client struct {
 }
 
 // New client with the given HTTP `addr`.
-func New(addr string) *Client {
-	client, err := influx.NewHTTPClient(influx.HTTPConfig{
-		Addr:    addr,
-		Timeout: 1 * time.Second,
-	})
+func New(config Config) *Client {
+	client, err := influx.NewHTTPClient(influx.HTTPConfig(config))
 
 	if err != nil {
 		panic(err)
