@@ -1,7 +1,18 @@
 // Package ansi provies ansi escape sequence helpers.
 package ansi
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/buger/goterm"
+)
+
+// Size returns the width and height.
+func Size() (w int, h int) {
+	w = goterm.Width()
+	h = goterm.Height()
+	return
+}
 
 // ClearAll clears the screen.
 func ClearAll() {
