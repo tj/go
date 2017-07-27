@@ -16,6 +16,14 @@ func Strip(s string) string {
 	return strip.ReplaceAllString(s, "")
 }
 
+// Length of characters with ansi escape sequences stripped.
+func Length(s string) (n int) {
+	for range Strip(s) {
+		n++
+	}
+	return
+}
+
 // Size returns the width and height.
 func Size() (w int, h int) {
 	w = goterm.Width()
