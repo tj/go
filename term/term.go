@@ -1,5 +1,5 @@
-// Package ansi provies ansi escape sequence helpers.
-package ansi
+// Package term provides ansi escape sequence helpers.
+package term
 
 import (
 	"fmt"
