@@ -4,6 +4,7 @@ package ansi
 import (
 	"fmt"
 	"regexp"
+	"strings"
 
 	"github.com/buger/goterm"
 )
@@ -22,6 +23,16 @@ func Length(s string) (n int) {
 		n++
 	}
 	return
+}
+
+// CenterLine a line of text.
+func CenterLine(s string) string {
+	r := strings.Repeat
+	w, h := Size()
+	size := Length(s)
+	xpad := (w - size) / 2
+	ypad := h / 2
+	return r("\n", ypad) + r(" ", xpad) + s + r("\n", ypad-1)
 }
 
 // Size returns the width and height.
