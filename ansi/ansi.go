@@ -3,9 +3,18 @@ package ansi
 
 import (
 	"fmt"
+	"regexp"
 
 	"github.com/buger/goterm"
 )
+
+// strip regexp.
+var strip = regexp.MustCompile(`\x1b\[(\d+[;m])+`)
+
+// Strip ansi escape sequences.
+func Strip(s string) string {
+	return strip.ReplaceAllString(s, "")
+}
 
 // Size returns the width and height.
 func Size() (w int, h int) {
