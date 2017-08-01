@@ -32,7 +32,7 @@ func CenterLine(s string) string {
 	size := Length(s)
 	xpad := (w - size) / 2
 	ypad := h / 2
-	return r("\n", ypad-1) + r(" ", xpad) + s + r("\n", ypad)
+	return r("\n", ypad) + r(" ", xpad) + s + r("\n", ypad)
 }
 
 // Size returns the width and height.
