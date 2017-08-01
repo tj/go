@@ -3,6 +3,7 @@ package term
 
 import (
 	"fmt"
+	"math"
 	"regexp"
 	"strings"
 
@@ -30,7 +31,7 @@ func CenterLine(s string) string {
 	r := strings.Repeat
 	w, h := Size()
 	size := Length(s)
-	xpad := (w - size) / 2
+	xpad := int(math.Abs(float64((w - size) / 2)))
 	ypad := h / 2
 	return r("\n", ypad) + r(" ", xpad) + s + r("\n", ypad)
 }
