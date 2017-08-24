@@ -4,10 +4,12 @@ package term
 import (
 	"fmt"
 	"math"
+	"os"
 	"regexp"
 	"strings"
 
 	"github.com/buger/goterm"
+	isatty "github.com/mattn/go-isatty"
 )
 
 // strip regexp.
@@ -77,4 +79,9 @@ func HideCursor() {
 // ShowCursor shows the cursor.
 func ShowCursor() {
 	fmt.Printf("\033[?25h")
+}
+
+// IsTerminal returns true if stdout isatty.
+func IsTerminal() bool {
+	return isatty.IsTerminal(os.Stdout.Fd())
 }
