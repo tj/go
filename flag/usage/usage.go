@@ -31,9 +31,9 @@ func Output(config *Config) func() {
 	return func() {
 
 		fmt.Fprintf(os.Stderr, "\n")
-		fmt.Fprintf(os.Stderr, "  Usage:\n")
+		fmt.Fprintf(os.Stderr, "  Usage:\n\n")
 		fmt.Fprintf(os.Stderr, "    %s [options]\n\n", os.Args[0])
-		fmt.Fprintf(os.Stderr, "  Flags:\n")
+		fmt.Fprintf(os.Stderr, "  Flags:\n\n")
 
 		flag.CommandLine.VisitAll(func(f *flag.Flag) {
 			s := fmt.Sprintf("    -%s", f.Name)
@@ -48,7 +48,7 @@ func Output(config *Config) func() {
 			} else {
 				// Four spaces before the tab triggers good alignment
 				// for both 4- and 8-space tab stops.
-				s += "    \t"
+				s += "\t"
 			}
 			s += usage
 			if !isZeroValue(f, f.DefValue) {
