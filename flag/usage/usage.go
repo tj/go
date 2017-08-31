@@ -36,21 +36,14 @@ func Output(config *Config) func() {
 		fmt.Fprintf(os.Stderr, "  Flags:\n\n")
 
 		flag.CommandLine.VisitAll(func(f *flag.Flag) {
-			s := fmt.Sprintf("    -%s", f.Name)
+			u := fmt.Sprintf("    -%s", f.Name)
 			name, usage := flag.UnquoteUsage(f)
+
 			if len(name) > 0 {
-				s += " " + name
+				u += " " + name
 			}
-			// Boolean flags of one ASCII letter are so common we
-			// treat them specially, putting their usage on the same line.
-			if len(s) <= 4 { // space, space, '-', 'x'.
-				s += "\t"
-			} else {
-				// Four spaces before the tab triggers good alignment
-				// for both 4- and 8-space tab stops.
-				s += "\t"
-			}
-			s += usage
+
+			s := fmt.Sprintf("%-25s %s", u, usage)
 			if !isZeroValue(f, f.DefValue) {
 				// if _, ok := f.Value.(*stringValue); ok {
 				// 	// put quotes on the value
