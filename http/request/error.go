@@ -8,6 +8,6 @@ type Error struct {
 }
 
 // Error implementation.
-func (e *Error) Error() string {
+func (e Error) Error() string {
 	return http.StatusText(e.Status)
 }
