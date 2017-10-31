@@ -9,8 +9,45 @@ import (
 	"strings"
 
 	"github.com/buger/goterm"
-	isatty "github.com/mattn/go-isatty"
+	"github.com/mattn/go-isatty"
 )
+
+// Renderer returns a render function which computes
+// the diff of each update required line-by-line,
+// and performs the changes.
+//
+// This provides a nicer user experience than
+// simply running re-rendering with ClearAll().
+func Renderer() func(string) {
+	var prev string
+	return func(curr string) {
+		for i, line := range linesChanged(curr, prev) {
+			if line != "" {
+				MoveTo(i+1, 1)
+				ClearLineEnd()
+				fmt.Printf("%s", line)
+			}
+		}
+		prev = curr
+	}
+}
+
+// linesChanged returns the lines changed, while unchanged
+// lines are simply empty strings.
+func linesChanged(curr, prev string) (lines []string) {
+	currLines := strings.Split(curr, "\n")
+	prevLines := strings.Split(prev, "\n")
+
+	for i, line := range currLines {
+		if len(prevLines) > i && line == prevLines[i] {
+			lines = append(lines, "")
+		} else {
+			lines = append(lines, line)
+		}
+	}
+
+	return
+}
 
 // strip regexp.
 var strip = regexp.MustCompile(`\x1b\[(\d+[;m])+`)
