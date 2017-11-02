@@ -21,15 +21,27 @@ import (
 func Renderer() func(string) {
 	var prev string
 	return func(curr string) {
-		for i, line := range linesChanged(curr, prev) {
+		lines := linesChanged(curr, prev)
+		for _, line := range lines {
+			MoveDown(1)
 			if line != "" {
-				MoveTo(i+1, 1)
 				ClearLineEnd()
 				fmt.Printf("%s", line)
 			}
 		}
+		MoveUp(len(lines))
 		prev = curr
 	}
+}
+
+// MoveDown moves the cursor to the beginning of n lines down.
+func MoveDown(n int) {
+	fmt.Printf("\033[%dE", n)
+}
+
+// MoveUp moves the cursor to the beginning of n lines up.
+func MoveUp(n int) {
+	fmt.Printf("\033[%dF", n)
 }
 
 // linesChanged returns the lines changed, while unchanged
@@ -106,6 +118,16 @@ func ClearLineStart() {
 // MoveTo moves the cursor to (x, y).
 func MoveTo(x, y int) {
 	fmt.Printf("\033[%d;%df", x, y)
+}
+
+// SaveCursorPosition saves the cursor position.
+func SaveCursorPosition() {
+	fmt.Printf("\033[s")
+}
+
+// RestoreCursorPosition saves the cursor position.
+func RestoreCursorPosition() {
+	fmt.Printf("\033[u")
 }
 
 // HideCursor hides the cursor.
