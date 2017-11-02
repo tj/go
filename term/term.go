@@ -117,7 +117,7 @@ func ClearLineStart() {
 
 // MoveTo moves the cursor to (x, y).
 func MoveTo(x, y int) {
-	fmt.Printf("\033[%d;%df", x, y)
+	fmt.Printf("\033[%d;%df", y, x)
 }
 
 // SaveCursorPosition saves the cursor position.
