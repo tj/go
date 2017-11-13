@@ -16,6 +16,18 @@ func IsStatus(err error, code int) bool {
 	return ok && int(e) == code
 }
 
+// IsClient returns true if err represents a 4xx error.
+func IsClient(err error) bool {
+	e, ok := err.(Error)
+	return ok && e >= 400 && e < 500
+}
+
+// IsServer returns true if err represents a 5xx error.
+func IsServer(err error) bool {
+	e, ok := err.(Error)
+	return ok && e >= 500
+}
+
 // IsNotFound returns true if err is a 404.
 func IsNotFound(err error) bool {
 	return IsStatus(err, 404)

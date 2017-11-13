@@ -21,3 +21,13 @@ func TestIsStatus(t *testing.T) {
 	assert.True(t, IsStatus(Error(500), 500))
 	assert.False(t, IsStatus(Error(500), 400))
 }
+
+func TestIsClient(t *testing.T) {
+	assert.True(t, IsClient(Error(404)))
+	assert.False(t, IsClient(Error(500)))
+}
+
+func TestIsServer(t *testing.T) {
+	assert.False(t, IsServer(Error(404)))
+	assert.True(t, IsServer(Error(500)))
+}
