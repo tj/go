@@ -3,6 +3,7 @@ package net
 import (
 	"crypto/tls"
 	"crypto/x509"
+	"net"
 	"net/url"
 	"strings"
 	"time"
@@ -25,7 +26,11 @@ func GetCert(uri string) (*x509.Certificate, error) {
 		u.Host += ":443"
 	}
 
-	conn, err := tls.Dial("tcp", u.Host, nil)
+	d := &net.Dialer{
+		Timeout: 10 * time.Second,
+	}
+
+	conn, err := tls.DialWithDialer(d, "tcp", u.Host, nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "dialing")
 	}
