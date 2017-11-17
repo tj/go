@@ -32,7 +32,7 @@ func GetCert(uri string) (*x509.Certificate, error) {
 
 	conn, err := tls.DialWithDialer(d, "tcp", u.Host, nil)
 	if err != nil {
-		return nil, errors.Wrap(err, "dialing")
+		return nil, err
 	}
 
 	cert := conn.ConnectionState().PeerCertificates[0]
