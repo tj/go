@@ -31,6 +31,9 @@ func TestGetCertSummary(t *testing.T) {
 		assert.NoError(t, err, "cert")
 		assert.NotEmpty(t, c.IssuedAt)
 		assert.NotEmpty(t, c.ExpiresAt)
+		assert.Equal(t, "Amazon", c.Issuer.Name)
+		assert.Equal(t, "Amazon", c.Issuer.Organization)
+		assert.Equal(t, "US", c.Issuer.Country)
 		assert.True(t, c.IssuedAt.Before(c.ExpiresAt))
 	})
 }

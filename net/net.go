@@ -39,10 +39,18 @@ func GetCert(uri string) (*x509.Certificate, error) {
 	return cert, nil
 }
 
+// Issuer information.
+type Issuer struct {
+	Name         string `json:"name"`
+	Country      string `json:"country"`
+	Organization string `json:"organization"`
+}
+
 // Summary for the certificate.
 type Summary struct {
 	IssuedAt  time.Time `json:"issued_at"`
 	ExpiresAt time.Time `json:"expires_at"`
+	Issuer    Issuer    `json:"issuer"`
 }
 
 // GetCertSummary returns a summary of the certificate.
@@ -55,5 +63,19 @@ func GetCertSummary(url string) (*Summary, error) {
 	return &Summary{
 		IssuedAt:  c.NotBefore,
 		ExpiresAt: c.NotAfter,
+		Issuer: Issuer{
+			Name:         c.Issuer.CommonName,
+			Country:      first(c.Issuer.Country),
+			Organization: first(c.Issuer.Organization),
+		},
 	}, nil
+}
+
+// first string in slice or an empty string.
+func first(s []string) string {
+	if len(s) > 0 {
+		return s[0]
+	}
+
+	return ""
 }
