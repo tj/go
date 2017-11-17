@@ -34,6 +34,7 @@ func TestGetCertSummary(t *testing.T) {
 		assert.Equal(t, "Amazon", c.Issuer.Name)
 		assert.Equal(t, "Amazon", c.Issuer.Organization)
 		assert.Equal(t, "US", c.Issuer.Country)
+		assert.Equal(t, []string{"apex.sh", "*.apex.sh"}, c.Domains)
 		assert.True(t, c.IssuedAt.Before(c.ExpiresAt))
 	})
 }

@@ -51,6 +51,7 @@ type Summary struct {
 	IssuedAt  time.Time `json:"issued_at"`
 	ExpiresAt time.Time `json:"expires_at"`
 	Issuer    Issuer    `json:"issuer"`
+	Domains   []string  `json:"domains"`
 }
 
 // GetCertSummary returns a summary of the certificate.
@@ -63,6 +64,7 @@ func GetCertSummary(url string) (*Summary, error) {
 	return &Summary{
 		IssuedAt:  c.NotBefore,
 		ExpiresAt: c.NotAfter,
+		Domains:   c.DNSNames,
 		Issuer: Issuer{
 			Name:         c.Issuer.CommonName,
 			Country:      first(c.Issuer.Country),
