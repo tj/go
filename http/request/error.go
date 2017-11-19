@@ -35,7 +35,7 @@ func IsNotFound(err error) bool {
 
 // Param returns the parameter by name.
 func Param(r *http.Request, name string) string {
-	return r.URL.Query().Get(":" + name)
+	return r.URL.Query().Get(name)
 }
 
 // ParamDefault returns the parameter by name or default value.
