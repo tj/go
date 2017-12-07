@@ -4,7 +4,6 @@ package term
 import (
 	"fmt"
 	"math"
-	"os"
 	"regexp"
 	"strings"
 
@@ -140,7 +139,7 @@ func ShowCursor() {
 	fmt.Printf("\033[?25h")
 }
 
-// IsTerminal returns true if stdout isatty.
-func IsTerminal() bool {
-	return isatty.IsTerminal(os.Stdout.Fd())
+// IsTerminal returns true if fd is a tty.
+func IsTerminal(fd uintptr) bool {
+	return isatty.IsTerminal(fd)
 }
