@@ -11,6 +11,9 @@ import (
 	"github.com/pkg/errors"
 )
 
+// lazy.
+var path = "/tmp/graph.html"
+
 // html template.
 var html = `<html>
 <body>
@@ -37,12 +40,12 @@ func OpenDot(r io.Reader) error {
 		return errors.Wrap(err, "executing")
 	}
 
-	err = ioutil.WriteFile("/tmp/graph.html", render(b), 0755)
+	err = ioutil.WriteFile(path, render(b), 0755)
 	if err != nil {
 		return errors.Wrap(err, "writing")
 	}
 
-	return browser.OpenURL("file:///tmp/out.html")
+	return browser.OpenURL("file://" + path)
 }
 
 // Must helper.
