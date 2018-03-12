@@ -61,7 +61,7 @@ func linesChanged(curr, prev string) (lines []string) {
 }
 
 // strip regexp.
-var strip = regexp.MustCompile(`\x1b\[(\d+[;m])+`)
+var strip = regexp.MustCompile(`\x1B\[[0-?]*[ -/]*[@-~]`)
 
 // Strip ansi escape sequences.
 func Strip(s string) string {
