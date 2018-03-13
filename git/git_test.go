@@ -78,3 +78,17 @@ func TestCommit_Tag(t *testing.T) {
 		assert.Equal(t, ``, c.Tag())
 	})
 }
+
+func TestCommit_Describe(t *testing.T) {
+	t.Run("when a tag is present should use the tag", func(t *testing.T) {
+		c, err := git.GetCommit("..", "v1.7.0")
+		assert.NoError(t, err)
+		assert.Equal(t, `v1.7.0`, c.Tag())
+	})
+
+	t.Run("when a tag is not present should use the sha", func(t *testing.T) {
+		c, err := git.GetCommit("..", "9cd44c4")
+		assert.NoError(t, err)
+		assert.Equal(t, `9cd44c4`, c.Describe())
+	})
+}

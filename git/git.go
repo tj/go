@@ -64,6 +64,15 @@ func (c *Commit) Tag() string {
 	return ""
 }
 
+// Describe returns the tag or sha.
+func (c *Commit) Describe() string {
+	if t := c.Tag(); t != "" {
+		return t
+	}
+
+	return c.AbbreviatedCommit
+}
+
 // GetCommit returns meta-data for the given commit within a repo.
 func GetCommit(dir, commit string) (c *Commit, err error) {
 	dir, err = GetRoot(dir)
