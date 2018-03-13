@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"os/exec"
+	"strings"
 
 	"github.com/pkg/errors"
 )
@@ -50,6 +51,17 @@ type Commit struct {
 	Subject              string `json:"subject"`
 	Tree                 string `json:"tree"`
 	VerificationFlag     string `json:"verification_flag"`
+}
+
+// Tag returns the tag or empty string.
+func (c *Commit) Tag() string {
+	parts := strings.Split(c.Refs, ", ")
+	for _, p := range parts {
+		if strings.HasPrefix(p, "tag: ") {
+			return strings.Replace(p, "tag: ", "", 1)
+		}
+	}
+	return ""
 }
 
 // GetCommit returns meta-data for the given commit within a repo.

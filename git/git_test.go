@@ -64,3 +64,17 @@ func TestGetCommit(t *testing.T) {
 		assert.NotEqual(t, a.Commit, b.Commit, "commits")
 	})
 }
+
+func TestCommit_Tag(t *testing.T) {
+	t.Run("when a tag is present", func(t *testing.T) {
+		c, err := git.GetCommit("..", "v1.7.0")
+		assert.NoError(t, err)
+		assert.Equal(t, `v1.7.0`, c.Tag())
+	})
+
+	t.Run("when a tag is not present", func(t *testing.T) {
+		c, err := git.GetCommit("..", "9cd44c4")
+		assert.NoError(t, err)
+		assert.Equal(t, ``, c.Tag())
+	})
+}
