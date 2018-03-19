@@ -35,22 +35,16 @@ type Commit struct {
 		Email string `json:"email"`
 		Name  string `json:"name"`
 	} `json:"author"`
-	Commit      string `json:"commit"`
-	CommitNotes string `json:"commit_notes"`
-	Commiter    struct {
+	Commit   string `json:"commit"`
+	Commiter struct {
 		Date  string `json:"date"`
 		Email string `json:"email"`
 		Name  string `json:"name"`
 	} `json:"commiter"`
-	Encoding             string `json:"encoding"`
 	Parent               string `json:"parent"`
 	Refs                 string `json:"refs"`
 	SanitizedSubjectLine string `json:"sanitized_subject_line"`
-	Signer               string `json:"signer"`
-	SignerKey            string `json:"signer_key"`
-	Subject              string `json:"subject"`
 	Tree                 string `json:"tree"`
-	VerificationFlag     string `json:"verification_flag"`
 }
 
 // Tag returns the tag or empty string.
@@ -80,7 +74,7 @@ func GetCommit(dir, commit string) (c *Commit, err error) {
 		return nil, err
 	}
 
-	cmd := exec.Command("git", "log", "-1", `--pretty=format:{"commit":"%H","abbreviated_commit":"%h","tree":"%T","abbreviated_tree":"%t","parent":"%P","abbreviated_parent":"%p","refs":"%D","encoding":"%e","verification_flag":"%G?","signer":"%GS","signer_key":"%GK","author":{"name":"%aN","email":"%aE","date":"%aD"},"commiter":{"name":"%cN","email":"%cE","date":"%cD"}}`, commit)
+	cmd := exec.Command("git", "log", "-1", `--pretty=format:{"commit":"%H","abbreviated_commit":"%h","tree":"%T","abbreviated_tree":"%t","parent":"%P","abbreviated_parent":"%p","refs":"%D","author":{"name":"%aN","email":"%aE","date":"%aD"},"commiter":{"name":"%cN","email":"%cE","date":"%cD"}}`, commit)
 	cmd.Dir = dir
 
 	b, err := output(cmd)
