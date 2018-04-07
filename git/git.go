@@ -91,9 +91,17 @@ func GetCommit(dir, commit string) (c *Commit, err error) {
 
 // output returns GIT command output with error normalization.
 func output(cmd *exec.Cmd) ([]byte, error) {
-	switch out, err := cmd.CombinedOutput(); {
-	case err == exec.ErrNotFound:
-		return nil, ErrLookup
+	out, err := cmd.CombinedOutput()
+
+	if e, ok := err.(*exec.Error); ok {
+		if e.Err == exec.ErrNotFound {
+			return nil, ErrLookup
+		}
+
+		return nil, e
+	}
+
+	switch {
 	case bytes.Contains(out, []byte("Not a git repository")):
 		return nil, ErrNoRepo
 	case bytes.Contains(out, []byte("DIRTY")):
