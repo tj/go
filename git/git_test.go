@@ -1,6 +1,7 @@
 package git_test
 
 import (
+	"os"
 	"testing"
 
 	"github.com/tj/assert"
@@ -66,6 +67,10 @@ func TestGetCommit(t *testing.T) {
 }
 
 func TestCommit_Tag(t *testing.T) {
+	if os.Getenv("CI") != "" {
+		t.SkipNow()
+	}
+
 	t.Run("when a tag is present", func(t *testing.T) {
 		c, err := git.GetCommit("..", "v1.7.0")
 		assert.NoError(t, err)
