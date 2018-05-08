@@ -67,9 +67,7 @@ func TestGetCommit(t *testing.T) {
 }
 
 func TestCommit_Tag(t *testing.T) {
-	if os.Getenv("CI") != "" {
-		t.SkipNow()
-	}
+	skipCI(t)
 
 	t.Run("when a tag is present", func(t *testing.T) {
 		c, err := git.GetCommit("..", "v1.7.0")
@@ -85,6 +83,8 @@ func TestCommit_Tag(t *testing.T) {
 }
 
 func TestCommit_Describe(t *testing.T) {
+	skipCI(t)
+
 	t.Run("when a tag is present should use the tag", func(t *testing.T) {
 		c, err := git.GetCommit("..", "v1.7.0")
 		assert.NoError(t, err)
@@ -96,4 +96,11 @@ func TestCommit_Describe(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, `9cd44c4`, c.Describe())
 	})
+}
+
+// skipCI skips when in CI.
+func skipCI(t *testing.T) {
+	if os.Getenv("CI") != "" {
+		t.SkipNow()
+	}
 }
