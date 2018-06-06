@@ -104,6 +104,8 @@ func output(cmd *exec.Cmd) ([]byte, error) {
 	switch {
 	case bytes.Contains(out, []byte("Not a git repository")):
 		return nil, ErrNoRepo
+	case bytes.Contains(out, []byte("ambiguous argument 'HEAD'")):
+		return nil, ErrNoRepo
 	case bytes.Contains(out, []byte("DIRTY")):
 		return nil, ErrDirty
 	case err != nil:
