@@ -202,6 +202,11 @@ func Teapot(w http.ResponseWriter, msg ...interface{}) {
 	write(w, http.StatusTeapot, msg)
 }
 
+// UnprocessableEntity response.
+func UnprocessableEntity(w http.ResponseWriter, msg ...interface{}) {
+	write(w, http.StatusUnprocessableEntity, msg)
+}
+
 // InternalServerError response.
 func InternalServerError(w http.ResponseWriter, msg ...interface{}) {
 	write(w, http.StatusInternalServerError, msg)
