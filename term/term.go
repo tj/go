@@ -11,53 +11,37 @@ import (
 	"github.com/mattn/go-isatty"
 )
 
-// Renderer returns a render function which computes
-// the diff of each update required line-by-line,
-// and performs the changes.
+// Renderer returns a function which renders strings in-place.
 //
-// This provides a nicer user experience than
-// simply running re-rendering with ClearAll().
+// The text is rendered to the current cursor position, and when
+// cleared with an empty string retains this position as if no
+// text has been rendered.
 func Renderer() func(string) {
 	var prev string
+
 	return func(curr string) {
-		lines := linesChanged(curr, prev)
-		for _, line := range lines {
-			MoveDown(1)
-			if line != "" {
-				ClearLineEnd()
-				fmt.Printf("%s", line)
+		// clear lines
+		if prev != "" {
+			for range lines(prev) {
+				MoveUp(1)
+				ClearLine()
 			}
 		}
-		MoveUp(len(lines))
+
+		// print lines
+		if curr != "" {
+			for _, s := range lines(curr) {
+				fmt.Printf("%s\n", s)
+			}
+		}
+
 		prev = curr
 	}
 }
 
-// MoveDown moves the cursor to the beginning of n lines down.
-func MoveDown(n int) {
-	fmt.Printf("\033[%dE", n)
-}
-
-// MoveUp moves the cursor to the beginning of n lines up.
-func MoveUp(n int) {
-	fmt.Printf("\033[%dF", n)
-}
-
-// linesChanged returns the lines changed, while unchanged
-// lines are simply empty strings.
-func linesChanged(curr, prev string) (lines []string) {
-	currLines := strings.Split(curr, "\n")
-	prevLines := strings.Split(prev, "\n")
-
-	for i, line := range currLines {
-		if len(prevLines) > i && line == prevLines[i] {
-			lines = append(lines, "")
-		} else {
-			lines = append(lines, line)
-		}
-	}
-
-	return
+// lines returns the lines in the given string.
+func lines(s string) []string {
+	return strings.Split(s, "\n")
 }
 
 // strip regexp.
@@ -117,6 +101,16 @@ func ClearLineStart() {
 // MoveTo moves the cursor to (x, y).
 func MoveTo(x, y int) {
 	fmt.Printf("\033[%d;%df", y, x)
+}
+
+// MoveDown moves the cursor to the beginning of n lines down.
+func MoveDown(n int) {
+	fmt.Printf("\033[%dE", n)
+}
+
+// MoveUp moves the cursor to the beginning of n lines up.
+func MoveUp(n int) {
+	fmt.Printf("\033[%dF", n)
 }
 
 // SaveCursorPosition saves the cursor position.
